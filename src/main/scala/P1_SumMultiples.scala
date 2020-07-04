@@ -1,13 +1,31 @@
-object P1 extends App {
-  def sumMultiples(x: Int, lim: Int) = {
-    (0 until lim by x).foldLeft(0)(_ + _)
+object P1 {
+  /**
+   * https://en.wikipedia.org/wiki/Arithmetic_progression
+   * https://www.mathblog.dk/project-euler-problem-1/
+   */
+  def sumMultiples(mult: Long, lim: Long): Long = {
+    // Calculate number of terms in the series
+    val n = Math.floor(lim/mult).toLong
+    // Get the arithmetic series from 1 to n,
+    // then multiplying by mult will produce the series for range [mult, ..., n*mult)
+    mult * (n*(n+1)/2)
   }
 
   /**
-   * First sum multiples of 3 and 5.
-   * Because 15 is a multiple of both 3 and 5, its multiple will appear twice.
-   * (Once in multiples of 3 and once in multiples of 5)
-   * So we subtract one appearance of multiples of 15.
-   */
-  println(sumMultiples(3, 1000) + sumMultiples(5, 1000) - sumMultiples(15, 1000))
+    * Because we are adding sum of multiples of x to sum of multiples of y,
+    * their common multiples will be repeated. 
+    * One occurrence of these common multiples needs to be subtracted to get the right output.
+    */
+  def sumUnionOfMultiples(x: Long, y: Long, lim:Long): Long = {
+    sumMultiples(x, lim) + sumMultiples(y, lim) - sumMultiples(x * y, lim)
+  }
+
+  def main(args: Array[String]) {
+    // Assuming input is "3 5 1000"
+    var x = args(0).toInt
+    var y = args(1).toInt
+    var lim = args(2).toInt - 1
+    
+    println(sumUnionOfMultiples(x, y, lim))
+  }
 }
